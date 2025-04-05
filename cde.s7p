@@ -1,3 +1,4 @@
+//                                                                                            2021/2022
 // CONTROLLO CABINA ELETTRICA PLC - AWL
 // Log, eventi ed guasti sono trattati come contatori
 
@@ -7,6 +8,7 @@ T Q0.0
 
 L 0
 T C1
+
 
 //controllo Temperatura Limite
 NETWORK 2
