@@ -1,0 +1,94 @@
+// CONTROLLO CABINA ELETTRICA PLC - AWL
+// Log, eventi ed guasti sono trattati come contatori
+
+NETWORK 1
+L 0
+T Q0.0
+
+L 0
+T C1
+
+//controllo Temperatura Limite
+NETWORK 2
+L IW100
+L 75
+>
+= S 5.0
+
+//Ritardo allarme
+TON T1
+IN S5.0
+PT 10s
+Q T1
+
+A T1
+L C1
++ 1
+T C1
+
+//Parte interruttori
+NETWORK 3
+A I0.0
+= Q0.1
+= R Q0.0
+
+TON T2
+IN I0.0
+PT 5s
+Q T2
+
+A T2
+L C2
++ 1
+T C2
+//Parte allarmi
+NETWORK 4
+A S5.0
+O I0.0
+= Q0.2
+
+TON T3
+IN Q0.2
+PT 3s
+Q T3
+
+NETWORK 5
+//RESET
+A I1.0
+= R S5.0
+= R Q0.2
+
+TON T4
+IN I1.0
+PT 2s
+Q T4
+
+//controlli eventi
+NETWORK 6
+L C1
+L 10
+>=
+= S 10.0
+
+L C2
+L 5
+>=
+= S 20.0
+
+NETWORK 7
+A S5.0
+T M0.0
+
+A I0.0
+T M0.1
+
+//Controllo guasti
+NETWORK 8
+L C1
+L 20
+>=
+= S 30.0
+
+A S10.0
+O S20.0
+= Q0.3
